@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  node:
+    image: esencoder/nodejs-mysql:nodejs-mysql-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=testdb
+    networks:
+      - app-network
+
+  mysql:
+    image: esencoder/nodejs-mysql:mysql8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: testdb
+    networks:
+      - app-network
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+networks:
+  app-network:
+
+volumes:
+  mysql-data:
